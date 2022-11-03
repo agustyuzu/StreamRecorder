@@ -9,7 +9,7 @@
 + 程序依赖  
 本工具依赖于以下程序，请自行安装并保证能在 $PATH 中找到。  
   + ffmpeg
-  + youtube-dl
+  + ~~youtube-dl~~ -> yt-dlp
   + streamlink
   + you-get
   + screen 
