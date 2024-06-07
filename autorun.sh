@@ -1,5 +1,8 @@
 #!/bin/bash
 source /etc/profile
+#这是你的venv路径 ~/samsung/streamrecorder/ 记得按自己的改
+#如果你的streamlink直接安装在系统，就把下面这行删了
+source ~/samsung/streamrecorder/bin/activate
 cd `dirname $0`
 LOG_PREFIX=$(date +"[%Y-%m-%d %H:%M:%S]")
 LOG_SUFFIX=$(date +"%Y%m%d_%H%M%S")
