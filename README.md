@@ -153,7 +153,7 @@ autorun.sh中的这一行请根据你的虚拟环境路径/path/to/your/venv修�
 ~~这个路径是我自用的~~
 
 ```bash
-nano ./streamrecorder/autorun.sh
+nano ~/streamrecorder/autorun.sh
 ```
 
 改好了按ctrl+o，按回车，按ctrl+x，按回车，就是保存和退出。
@@ -231,7 +231,38 @@ twitch频道的地址，只需要填写频道ID，如rin_co_co
 
 Twitcast  
 twitcasting频道的地址，只需要填写频道ID，如c:rin_co  
-  
+
+#### bilicookie说明
+
+b站人多的直播间，比如 赛事直播 ，不登录就是最低画质。
+在./config中已放入一个没有后缀没有内容的文本文件bilicookie，b站录制相关会读取。
+没有内容时不会有问题。
+
+浏览器打开https://live.bilibili.com/ ，按f12
+
+获取如下项目的值并改好写在bilicookie内，注意保持没有后缀：
+
+```
+http-cookie=SESSDATA=0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+http-cookie=bili_jct=0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+http-cookie=DedeUserID__ckMd5=9xxxxxxxxxxxxxxx
+http-cookie=DedeUserID=123456789
+
+```
+
+你可以用nano编辑：
+
+```bash
+nano ~/streamrecorder/config/bilicookie
+```
+
+这是示例，分别是中文/en界面，值在红框内，双击后复制。
+
+[![pktQ9s0.png](https://s21.ax1x.com/2024/06/07/pktQ9s0.png)](https://imgse.com/i/pktQ9s0)
+
+[![pktQpMq.png](https://s21.ax1x.com/2024/06/07/pktQpMq.png)](https://imgse.com/i/pktQpMq)
+
+
 ## 运行说明
 
 ```bash
@@ -280,7 +311,7 @@ su - recorder -c "/home/recorder/StreamRecorder/streamrecorder.sh start
 
 ## work in process
 
-- [ ] 在global.config中配置bilibili cookie，以支持录制大明星的最高清直播
+- [x] 配置bilibili cookie，以支持录制大明星的最高清直播
 - [ ] 自动安装依赖
 - [ ] 自动配置这该死的venv
 - [ ] rclone替换成alist或者直接删了

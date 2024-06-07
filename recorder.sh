@@ -130,23 +130,47 @@ while true; do
   # Use streamlink "--hls-live-restart" parameter to record for HLS seeking support
   #M3U8_URL=$(streamlink --stream-url "https://www.youtube.com/watch?v=${ID}" "best")
   #ffmpeg   -i "$M3U8_URL" -codec copy   -f hls -hls_time 3600 -hls_list_size 0 "${SAVEFOLDER}${FOLDERBYDATE}/${FNAME}" > "${LOGFOLDER}${FNAME}.log" 2>&1
-  if [ "$STREAMORRECORD" == "both" ]
+  if [ "$SITE" == "bilibili" ]
   then
-    streamlink "$LIVE_URL" "1080p,720p,best" -o - | ffmpeg -re -i pipe:0 \
-    -codec copy -f mpegts "${SAVEFOLDER}${FOLDERBYDATE}/${FNAME}" \
-    -vcodec copy -acodec aac -strict -2 -f flv "${RTMPURL}" \
-    > "${LOGFOLDER}${FNAME}.streaming.log" 2>&1
-    STREAMSUCCESS=$?
-  elif [ "$STREAMORRECORD" == "record" ]
-  then
-    streamlink --loglevel trace -o "${SAVEFOLDER}${FOLDERBYDATE}/${FNAME}" \
-    "$LIVE_URL" "1080p,720p,best" > "${LOGFOLDER}${FNAME}.log" 2>&1
-  elif [ "$STREAMORRECORD" == "stream" ]
-  then
-    streamlink "$LIVE_URL" "1080p,720p,best" -o - | ffmpeg -re -i pipe:0 \
-    -vcodec copy -acodec aac -strict -2 -f flv "${RTMPURL}" \
-    > "${LOGFOLDER}${FNAME}.streaming.log" 2>&1 
+  #录制b站，因为大明星要cookie
+   if [ "$STREAMORRECORD" == "both" ]
+   then
+     streamlink --config ./config/bilicookie "$LIVE_URL" "1080p,720p,best" -o - | ffmpeg -re -i pipe:0 \
+     -codec copy -f mpegts "${SAVEFOLDER}${FOLDERBYDATE}/${FNAME}" \
+     -vcodec copy -acodec aac -strict -2 -f flv "${RTMPURL}" \
+     > "${LOGFOLDER}${FNAME}.streaming.log" 2>&1
+     STREAMSUCCESS=$?
+   elif [ "$STREAMORRECORD" == "record" ]
+   then
+     streamlink --config ./config/bilicookie --loglevel trace -o "${SAVEFOLDER}${FOLDERBYDATE}/${FNAME}" \
+     "$LIVE_URL" "1080p,720p,best" > "${LOGFOLDER}${FNAME}.log" 2>&1
+   elif [ "$STREAMORRECORD" == "stream" ]
+   then
+     streamlink --config ./config/bilicookie "$LIVE_URL" "1080p,720p,best" -o - | ffmpeg -re -i pipe:0 \
+     -vcodec copy -acodec aac -strict -2 -f flv "${RTMPURL}" \
+     > "${LOGFOLDER}${FNAME}.streaming.log" 2>&1 
+   fi
+  else
+  #其他网站
+   if [ "$STREAMORRECORD" == "both" ]
+   then
+     streamlink "$LIVE_URL" "1080p,720p,best" -o - | ffmpeg -re -i pipe:0 \
+     -codec copy -f mpegts "${SAVEFOLDER}${FOLDERBYDATE}/${FNAME}" \
+     -vcodec copy -acodec aac -strict -2 -f flv "${RTMPURL}" \
+     > "${LOGFOLDER}${FNAME}.streaming.log" 2>&1
+     STREAMSUCCESS=$?
+   elif [ "$STREAMORRECORD" == "record" ]
+   then
+     streamlink --loglevel trace -o "${SAVEFOLDER}${FOLDERBYDATE}/${FNAME}" \
+     "$LIVE_URL" "1080p,720p,best" > "${LOGFOLDER}${FNAME}.log" 2>&1
+   elif [ "$STREAMORRECORD" == "stream" ]
+   then
+     streamlink "$LIVE_URL" "1080p,720p,best" -o - | ffmpeg -re -i pipe:0 \
+     -vcodec copy -acodec aac -strict -2 -f flv "${RTMPURL}" \
+     > "${LOGFOLDER}${FNAME}.streaming.log" 2>&1 
+   fi
   fi
+
   # backup stream if autobackup is on 
   sleep 5 
   if [ "$AUTOBACKUP" == "on" ] && [ "$STREAMORRECORD" != "stream" ]
